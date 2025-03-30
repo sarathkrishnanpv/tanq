@@ -1,9 +1,18 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tanq.driver.app/widgets/date_picker_dialog.dart' as custom;
 
 class EarningsController extends GetxController with GetSingleTickerProviderStateMixin {
   // Period selector state (0 = today, 1 = last 7 days)
   final RxInt selectedPeriod = 0.obs;
+  
+  // Selected date for custom date filtering
+  final Rx<DateTime> selectedDate = DateTime.now().obs;
+  final dateFormat = DateFormat('EEE, MMM d');
+  
+  // Returns formatted selected date string
+  String get formattedDate => dateFormat.format(selectedDate.value);
   
   // TabController for the segmented tab control
   late TabController tabController;
@@ -74,6 +83,28 @@ class EarningsController extends GetxController with GetSingleTickerProviderStat
     tabController.dispose();
     pageController.dispose();
     super.onClose();
+  }
+  
+  void showDatePickerDialog() {
+    Get.dialog(
+      custom.DatePickerDialog(
+        initialDate: selectedDate.value,
+        onDateSelected: (date) {
+          selectedDate.value = date;
+          // Switch to custom date mode (if not already in a custom mode)
+          if (selectedPeriod.value < 2) {
+            selectedPeriod.value = 2; // Custom date period
+          }
+          loadTransactionsForSelectedDate();
+        },
+      ),
+    );
+  }
+  
+  void loadTransactionsForSelectedDate() {
+    // In a real app, you would filter transactions for the selected date
+    // For now, we'll just update the transactions list with the same data
+    loadTransactions();
   }
   
   void loadTransactions() {

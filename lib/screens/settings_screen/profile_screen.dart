@@ -173,7 +173,7 @@ class ProfileScreen extends StatelessWidget {
     }
     
     return InkWell(
-      onTap: () => document['isError'] ? Get.to(() => const ReuploadDocumentScreen()) : controller.viewDocumentDetails(document['id'] as String),
+      onTap: () => document['isError'] ? Get.to(() => const ReuploadDocumentScreen()) : null,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
         decoration: BoxDecoration(

@@ -55,7 +55,7 @@ class EarningsScreen extends StatelessWidget {
                         topRight: Radius.circular(2),
                       ),
                     ),
-                    child: Obx(() => ListView(
+                    child: ListView(
                       padding: EdgeInsets.zero,
                       physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                       children: [
@@ -68,7 +68,7 @@ class EarningsScreen extends StatelessWidget {
                         // Transactions List
                         _buildTransactionsList(controller),
                       ],
-                    )),
+                    ),
                   ),
                 ),
               ],
@@ -103,7 +103,6 @@ class EarningsScreen extends StatelessWidget {
             children: [
               // Amount with custom styled rupee symbol
               Row(
-               
                 children: [
                   // Rupee symbol (smaller and grey, positioned at the top)
                   Text(
@@ -115,13 +114,13 @@ class EarningsScreen extends StatelessWidget {
                     ),
                   ),
                   // Amount value with comma formatting
-                  const Text(
-                    '1,472.78',
-                    style: TextStyle(
+                  Obx(() => Text(
+                    '${controller.totalEarnings.value}',
+                    style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  )),
                 ],
               ),
               Divider(
@@ -156,7 +155,6 @@ class EarningsScreen extends StatelessWidget {
           RichText(
             text: const TextSpan(
               children: [
-                
                 TextSpan(
                   text: 'You\'re total earnings of today',
                   style: TextStyle(
@@ -165,7 +163,6 @@ class EarningsScreen extends StatelessWidget {
                     color: Color(0xFF172E71),
                   ),
                 ),
-                
               ],
             ),
           ),
@@ -242,8 +239,11 @@ class EarningsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            child:  Center(
-              child: SvgPicture.asset(Assets.images.icons.calendarDark)
+            child: InkWell(
+              onTap: controller.showDatePickerDialog,
+              child: Center(
+                child: SvgPicture.asset(Assets.images.icons.calendarDark)
+              ),
             ),
           ),
         ],
@@ -258,13 +258,17 @@ class EarningsScreen extends StatelessWidget {
         // Transaction header
         Padding(
           padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 24.h, bottom: 12.h),
-          child: Text(
-            'Transaction - ${controller.selectedPeriod.value == 0 ? 'today' : 'last 7 days'}',
+          child: Obx(() => Text(
+            controller.selectedPeriod.value == 0 
+                ? 'Transaction - today'
+                : controller.selectedPeriod.value == 1 
+                    ? 'Transaction - last 7 days'
+                    : 'Transaction - ${controller.formattedDate}',
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
-          ),
+          )),
         ),
         
         // PageView for swipe gestures
@@ -273,7 +277,9 @@ class EarningsScreen extends StatelessWidget {
           child: PageView(
             controller: controller.pageController,
             onPageChanged: (index) {
-              controller.tabController.animateTo(index);
+              if (index < 2) { // Only animate tab controller for the first two tabs
+                controller.tabController.animateTo(index);
+              }
               controller.selectedPeriod.value = index;
             },
             children: [
@@ -281,6 +287,8 @@ class EarningsScreen extends StatelessWidget {
               _buildTransactionListView(controller, 0),
               // Last 7 days transactions
               _buildTransactionListView(controller, 1),
+              // Custom date transactions
+              _buildTransactionListView(controller, 2),
             ],
           ),
         ),
@@ -289,13 +297,13 @@ class EarningsScreen extends StatelessWidget {
   }
 
   Widget _buildTransactionListView(EarningsController controller, int period) {
-    return ListView.builder(
+    return Obx(() => ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.zero,
       itemCount: controller.transactions.length,
       itemBuilder: (context, index) => _buildTransactionItem(controller.transactions[index]),
-    );
+    ));
   }
   
   Widget _buildTransactionItem(Map<String, dynamic> transaction) {
@@ -378,8 +386,7 @@ class EarningsScreen extends StatelessWidget {
               ),
             ),
             // Amount
-            const Row(
-             
+            Row(
               children: [
                 Text(
                   '₹',
@@ -390,8 +397,8 @@ class EarningsScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '482.00',
-                  style: TextStyle(
+                  '${transaction['amount']}',
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.green,

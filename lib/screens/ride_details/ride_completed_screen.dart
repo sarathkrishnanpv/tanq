@@ -105,7 +105,9 @@ class RideCompletedScreen extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 32.h),
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.close(2);
+                Navigator.pop(context);
+        
+            
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,

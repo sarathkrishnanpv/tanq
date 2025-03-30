@@ -79,14 +79,14 @@ class MainScreen extends StatelessWidget {
 
         return shouldPop ?? false;
       },
-      child: Obx(() => Scaffold(
-        body: IndexedStack(
+      child: Scaffold(
+        body: Obx(() => IndexedStack(
           index: controller.selectedIndex.value,
           children: screens,
-        ),
+        )),
         bottomNavigationBar: Stack(
           children: [
-            BottomNavigationBar(
+            Obx(() => BottomNavigationBar(
               currentIndex: controller.selectedIndex.value,
               onTap: (index) {
                 HapticFeedback.lightImpact();
@@ -173,37 +173,41 @@ class MainScreen extends StatelessWidget {
                   label: 'Settings',
                 ),
               ],
-            ),
+            )),
             // Notification badge positioned above the navbar
-            if (controller.unreadNotificationsCount.value > 0)
-              Positioned(
-                top: 7.h,
-                right: MediaQuery.of(context).size.width * 0.29, // Position above notifications icon
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-                  decoration: BoxDecoration( 
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 14.w,
-                    minHeight: 14.h,
-                  ),
-                  child: Text(
-                    controller.unreadNotificationsCount.value > 99 
-                        ? '99+' 
-                        : '99+',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 8.sp,
-                      fontWeight: FontWeight.bold,
+            Obx(() {
+              return controller.unreadNotificationsCount.value > 0
+                ? Positioned(
+                    top: 7.h,
+                    right: MediaQuery.of(context).size.width * 0.29, // Position above notifications icon
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                      decoration: BoxDecoration( 
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 14.w,
+                        minHeight: 14.h,
+                      ),
+                      child: Text(
+                        controller.unreadNotificationsCount.value > 99 
+                            ? '99+' 
+                            : '99+',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 8.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
+                  )
+                : const SizedBox.shrink();
+            }),
           ],
         ),
-      )));
+      ),
+    );
   }
 } 

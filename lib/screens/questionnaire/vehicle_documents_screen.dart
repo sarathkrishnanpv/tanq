@@ -9,6 +9,12 @@ import 'package:tanq.driver.app/utils/navigation_utils.dart';
 import 'package:tanq.driver.app/screens/questionnaire/selfie_screen.dart';
 import 'package:tanq.driver.app/screens/questionnaire/drivers_license_screen.dart';
 import 'package:tanq.driver.app/screens/questionnaire/rc_book_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pcc_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pollution_certificate_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/insurance_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/permit_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/aadhar_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pan_screen.dart';
 
 class VehicleDocumentsScreen extends StatelessWidget {
   VehicleDocumentsScreen({Key? key}) : super(key: key);
@@ -232,32 +238,50 @@ class VehicleDocumentsScreen extends StatelessWidget {
                         _buildDocumentItem(
                           title: 'Police Clearance Certificate (PCC)',
                           isUploaded: controller.pccUploaded.value,
-                          onTap: () => controller.uploadPCC(),
+                          onTap: () {
+                            controller.uploadPCC();
+                            Get.to(() => PCCScreen());
+                          },
                         ),
                         _buildDocumentItem(
                           title: 'Vehicle Pollution',
                           isUploaded: controller.pollutionUploaded.value,
-                          onTap: () => controller.uploadPollution(),
+                          onTap: () {
+                            controller.uploadPollution();
+                            Get.to(() => PollutionCertificateScreen());
+                          },
                         ),
                         _buildDocumentItem(
                           title: 'Vehicle Insurance',
                           isUploaded: controller.insuranceUploaded.value,
-                          onTap: () => controller.uploadInsurance(),
+                          onTap: () {
+                            controller.uploadInsurance();
+                            Get.to(() => InsuranceScreen());
+                          },
                         ),
                         _buildDocumentItem(
                           title: 'Vehicle Permit',
                           isUploaded: controller.permitUploaded.value,
-                          onTap: () => controller.uploadPermit(),
+                          onTap: () {
+                            controller.uploadPermit();
+                            Get.to(() => PermitScreen());
+                          },
                         ),
                         _buildDocumentItem(
                           title: 'Aadhar Card',
                           isUploaded: controller.aadharUploaded.value,
-                          onTap: () => controller.uploadAadhar(),
+                          onTap: () {
+                            controller.uploadAadhar();
+                            Get.to(() => AadharScreen());
+                          },
                         ),
                         _buildDocumentItem(
                           title: 'PAN Card',
                           isUploaded: controller.panUploaded.value,
-                          onTap: () => controller.uploadPAN(),
+                          onTap: () {
+                            controller.uploadPAN();
+                            Get.to(() => PANScreen());
+                          },
                         ),
                       ],
                     )),

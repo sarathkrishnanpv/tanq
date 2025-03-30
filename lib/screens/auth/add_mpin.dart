@@ -123,8 +123,7 @@ class _AddMpinState extends State<AddMpin> {
                 const Sevenh(),
                 AppButton(
                     onTap: () {
-                      // Navigate to the first questionnaire screen
-                      Get.offNamed('/questionnaire/personal');
+                      Get.toNamed('/questionnaire/personal');
                     },
                     text: "Continue",
                     icon: true,

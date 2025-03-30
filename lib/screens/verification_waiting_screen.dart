@@ -5,6 +5,7 @@ import 'package:tanq.driver.app/gen/assets.gen.dart';
 import 'package:tanq.driver.app/screens/main_screen.dart';
 import 'package:tanq.driver.app/utils/app_button.dart';
 import 'package:tanq.driver.app/widgets/grid_background.dart';
+import 'package:tanq.driver.app/bindings/main_binding.dart';
 
 class VerificationWaitingScreen extends StatelessWidget {
   const VerificationWaitingScreen({super.key});
@@ -87,7 +88,7 @@ class VerificationWaitingScreen extends StatelessWidget {
                         Expanded(
                           child: AppButton(
                             onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+                            Get.to(() => const MainScreen(), binding: MainBinding());
                             },
                             text: 'Contact',
                             buttonColor: Colors.white,

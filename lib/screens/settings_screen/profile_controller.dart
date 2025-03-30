@@ -1,4 +1,12 @@
 import 'package:get/get.dart';
+import 'package:tanq.driver.app/screens/questionnaire/aadhar_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/drivers_license_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/insurance_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pan_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pcc_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/permit_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pollution_certificate_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/rc_book_screen.dart';
 
 class ProfileController extends GetxController {
   // User profile data
@@ -88,8 +96,33 @@ class ProfileController extends GetxController {
   
   // Function to navigate to document details
   void viewDocumentDetails(String documentId) {
-    // This would navigate to a document details screen
-    // For now, it just logs the document ID
-    print('Viewing document details for: $documentId');
+    switch (documentId) {
+      case 'drivers_license':
+        Get.to(() => DriversLicenseScreen());
+        break;
+      case 'rc_book':
+        Get.to(() => RCBookScreen());
+        break;
+      case 'police_clearance':
+        Get.to(() => PCCScreen());
+        break;
+      case 'vehicle_pollution':
+        Get.to(() => PollutionCertificateScreen());
+        break;
+      case 'vehicle_insurance':
+        Get.to(() => InsuranceScreen());
+        break;
+      case 'vehicle_permit':
+        Get.to(() => PermitScreen());
+        break;
+      case 'aadhar_card':
+        Get.to(() => AadharScreen());
+        break;
+      case 'pan_card':
+        Get.to(() => PANScreen());
+        break;
+      default:
+        print('No specific screen for: $documentId');
+    }
   }
 } 

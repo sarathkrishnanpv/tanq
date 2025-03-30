@@ -9,6 +9,15 @@ import 'package:tanq.driver.app/screens/ride_details/new_ride_details_binding.da
 import 'package:tanq.driver.app/screens/ride_details/accepted_ride_screen.dart';
 import 'package:tanq.driver.app/screens/ride_details/accepted_ride_binding.dart';
 import 'package:tanq.driver.app/screens/questionnaire/personal_info_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/vehicle_info_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/drivers_license_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/rc_book_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pcc_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pollution_certificate_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/insurance_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/permit_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/aadhar_screen.dart';
+import 'package:tanq.driver.app/screens/questionnaire/pan_screen.dart';
 import 'package:tanq.driver.app/bindings/main_binding.dart';
 import 'package:tanq.driver.app/screens/splash/splash_screen.dart';
 import 'package:tanq.driver.app/utils/global.dart';
@@ -49,7 +58,54 @@ class MyApp extends StatelessWidget {
             ),
           ),
           initialBinding: MainBinding(),
-          home: const MainScreen(),
+          getPages: [
+            GetPage(
+              name: '/',
+              page: () => const SplashScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/personal',
+              page: () => PersonalInfoScreen(),
+              binding: QuestionnaireBinding(),
+            ),
+            GetPage(
+              name: '/questionnaire/vehicle',
+              page: () => VehicleInfoScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/license',
+              page: () => DriversLicenseScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/rc_book',
+              page: () => RCBookScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/pcc',
+              page: () => PCCScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/pollution',
+              page: () => PollutionCertificateScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/insurance',
+              page: () => InsuranceScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/permit',
+              page: () => PermitScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/aadhar',
+              page: () => AadharScreen(),
+            ),
+            GetPage(
+              name: '/questionnaire/pan',
+              page: () => PANScreen(),
+            ),
+          ],
+          home: const SplashScreen(),
          );
       },
     );

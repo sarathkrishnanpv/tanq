@@ -1,0 +1,7 @@
+com.tanqdriver.app-pngs-0 D:\New folder\tanq\android\build\generated\res\pngs\debug
+com.tanqdriver.app-resValues-1 D:\New folder\tanq\android\build\generated\res\resValues\debug
+com.tanqdriver.app-packageDebugResources-2 D:\New folder\tanq\android\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.tanqdriver.app-packageDebugResources-3 D:\New folder\tanq\android\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.tanqdriver.app-merged_res-4 D:\New folder\tanq\android\build\intermediates\merged_res\debug
+com.tanqdriver.app-debug-5 D:\New folder\tanq\android\src\debug\res
+com.tanqdriver.app-main-6 D:\New folder\tanq\android\src\main\res

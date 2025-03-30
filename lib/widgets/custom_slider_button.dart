@@ -57,6 +57,13 @@ class SlideButtonController extends GetxController {
     isCompleted.value = false;
     lastHapticPosition = 0.0;
   }
+  
+  void completeReset() {
+    position.value = 0;
+    isCompleted.value = false;
+    lastHapticPosition = 0.0;
+    maxWidth = 0.0;
+  }
 }
 
 class CustomSlideButton extends StatefulWidget {
@@ -80,20 +87,37 @@ class CustomSlideButton extends StatefulWidget {
 class _CustomSlideButtonState extends State<CustomSlideButton> {
   // Create a unique instance of the controller for each button
   late final SlideButtonController controller;
+  late final String controllerTag;
   
   @override
   void initState() {
     super.initState();
     // Use unique ID to prevent controller conflicts
-    controller = Get.put(SlideButtonController(), tag: 'slider_${DateTime.now().millisecondsSinceEpoch}');
+    controllerTag = 'slider_${DateTime.now().millisecondsSinceEpoch}';
+    
+    // First check if there's an existing controller that needs to be deleted
+    if (Get.isRegistered<SlideButtonController>(tag: controllerTag)) {
+      Get.delete<SlideButtonController>(tag: controllerTag);
+    }
+    
+    // Create a new controller
+    controller = Get.put(SlideButtonController(), tag: controllerTag);
+    
     // Reset controller on init
+    controller.completeReset();
+  }
+  
+  @override
+  void didUpdateWidget(CustomSlideButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reset controller when widget is updated to ensure it works on reuse
     controller.reset();
   }
   
   @override
   void dispose() {
-    // Clean up controller when widget is disposed
-    Get.delete<SlideButtonController>(tag: controller.toString());
+    // Clean up controller with the correct tag when widget is disposed
+    Get.delete<SlideButtonController>(tag: controllerTag);
     super.dispose();
   }
 
@@ -152,10 +176,14 @@ class _CustomSlideButtonState extends State<CustomSlideButton> {
                 bottom: 0,
                 child: GestureDetector(
                   onPanUpdate: (details) {
-                    controller.updatePosition(details.delta.dx, widget.onSlideComplete);
+                    if (!controller.isCompleted.value) {
+                      controller.updatePosition(details.delta.dx, widget.onSlideComplete);
+                    }
                   },
                   onPanEnd: (details) {
-                    controller.finishSlide(widget.onSlideComplete);
+                    if (!controller.isCompleted.value) {
+                      controller.finishSlide(widget.onSlideComplete);
+                    }
                   },
                   child: Container(
                     height: 56, // Match parent height

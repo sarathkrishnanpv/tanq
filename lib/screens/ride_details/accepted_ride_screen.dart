@@ -27,6 +27,10 @@ class AcceptedRideController extends GetxController {
   final RxBool isOtpVerified = false.obs;
   final RxBool isRideCompleted = false.obs;
   
+  // Keys for forcing rebuild of slide buttons
+  final RxString arrivalButtonKey = UniqueKey().toString().obs;
+  final RxString completeRideButtonKey = UniqueKey().toString().obs;
+  
   // Passenger info
   final RxString passengerName = 'Anandhu'.obs; // This would come from API in real app
   
@@ -58,6 +62,8 @@ class AcceptedRideController extends GetxController {
   
   void markArrivedAtPickup() {
     isArrivedAtPickup.value = true;
+    // If we ever need to show this button again, ensure it's a fresh instance
+    arrivalButtonKey.value = UniqueKey().toString();
   }
   
   void startRide() {
@@ -79,6 +85,8 @@ class AcceptedRideController extends GetxController {
   void _completeOtpVerification() {
     isOtpVerified.value = true;
     isRideStarted.value = true;
+    // Generate new key for complete ride button to ensure fresh state
+    completeRideButtonKey.value = UniqueKey().toString();
   }
   
   void completeRide() {
@@ -657,6 +665,7 @@ class AcceptedRideScreen extends StatelessWidget {
                         if (controller.isRideStarted.value && !controller.isRideCompleted.value) {
                           // Show slider button to complete ride after OTP verification
                           return CustomSlideButton(
+                            key: Key(controller.completeRideButtonKey.value),
                             onSlideComplete: () => controller.completeRide(),
                             text: 'Complete ride',
                           );
@@ -675,8 +684,7 @@ class AcceptedRideScreen extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.play_arrow, color: Colors.white, size: 20),
-                                SizedBox(width: 8.w),
+                              
                                 Text(
                                   'Start Ride',
                                   style: TextStyle(
@@ -691,6 +699,7 @@ class AcceptedRideScreen extends StatelessWidget {
                         } else {
                           // Show arrival button
                           return CustomSlideButton(
+                            key: Key(controller.arrivalButtonKey.value),
                             onSlideComplete: () => controller.markArrivedAtPickup(),
                             text: 'Arrived at pickup location',
                           );
