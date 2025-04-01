@@ -26,7 +26,7 @@ class MainScreen extends StatelessWidget {
     
     return WillPopScope(
       onWillPop: () async {
-        // Show confirmation dialog when trying to exit app with back button
+    
         final shouldPop = await showDialog<bool>(
           context: context,
           builder: (context) {
