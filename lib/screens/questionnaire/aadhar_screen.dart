@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
 
 class AadharScreen extends StatelessWidget {
   AadharScreen({super.key});
@@ -67,18 +68,21 @@ class AadharScreen extends StatelessWidget {
                   : '',
               fileSize: '1.2 MB',
               isUploaded: controller.aadharPaths.isNotEmpty && controller.aadharPaths.length > 0,
-              onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  if (controller.aadharPaths.isEmpty) {
-                    controller.aadharPaths.add(image.path);
-                  } else if (controller.aadharPaths.length == 1) {
-                    controller.aadharPaths[0] = image.path;
-                  } else {
-                    controller.aadharPaths[0] = image.path;
-                  }
-                }
+              onUpload: () {
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      if (controller.aadharPaths.isEmpty) {
+                        controller.aadharPaths.add(image.path);
+                      } else if (controller.aadharPaths.length == 1) {
+                        controller.aadharPaths[0] = image.path;
+                      } else {
+                        controller.aadharPaths[0] = image.path;
+                      }
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image
@@ -106,19 +110,22 @@ class AadharScreen extends StatelessWidget {
                   : '',
               fileSize: '1.0 MB',
               isUploaded: controller.aadharPaths.length > 1,
-              onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  if (controller.aadharPaths.isEmpty) {
-                    controller.aadharPaths.add(''); // Add empty front side
-                    controller.aadharPaths.add(image.path);
-                  } else if (controller.aadharPaths.length == 1) {
-                    controller.aadharPaths.add(image.path);
-                  } else {
-                    controller.aadharPaths[1] = image.path;
-                  }
-                }
+              onUpload: () {
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      if (controller.aadharPaths.isEmpty) {
+                        controller.aadharPaths.add(''); // Add empty front side
+                        controller.aadharPaths.add(image.path);
+                      } else if (controller.aadharPaths.length == 1) {
+                        controller.aadharPaths.add(image.path);
+                      } else {
+                        controller.aadharPaths[1] = image.path;
+                      }
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image

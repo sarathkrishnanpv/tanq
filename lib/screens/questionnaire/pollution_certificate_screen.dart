@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
 
 class PollutionCertificateScreen extends StatelessWidget {
   PollutionCertificateScreen({super.key});
@@ -66,12 +67,15 @@ class PollutionCertificateScreen extends StatelessWidget {
               fileSize: '1.1 MB',
               isUploaded: controller.pollutionPaths.isNotEmpty,
               onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  controller.pollutionPaths.clear();
-                  controller.pollutionPaths.add(image.path);
-                }
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      controller.pollutionPaths.clear();
+                      controller.pollutionPaths.add(image.path);
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image

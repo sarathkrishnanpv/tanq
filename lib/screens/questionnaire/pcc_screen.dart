@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
 
 class PCCScreen extends StatelessWidget {
   PCCScreen({super.key});
@@ -66,12 +67,15 @@ class PCCScreen extends StatelessWidget {
               fileSize: '1.2 MB',
               isUploaded: controller.pccPaths.isNotEmpty,
               onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  controller.pccPaths.clear();
-                  controller.pccPaths.add(image.path);
-                }
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      controller.pccPaths.clear();
+                      controller.pccPaths.add(image.path);
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image

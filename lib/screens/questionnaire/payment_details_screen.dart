@@ -218,6 +218,73 @@ class PaymentDetailsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
 
+                    // Beneficiary Name Field
+                    FadeInDown(
+                      duration: const Duration(milliseconds: 400),
+                      delay: const Duration(milliseconds: 275),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Beneficiary Name',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Obx(() => TextFormField(
+                            onChanged: (value) {
+                              controller.beneficiaryName.value = value;
+                              controller.beneficiaryNameError.value = false;
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Enter name as in bank account',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4.r),
+                                borderSide: BorderSide(
+                                  color: controller.beneficiaryNameError.value 
+                                    ? Colors.red 
+                                    : Colors.grey[300]!,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4.r),
+                                borderSide: BorderSide(
+                                  color: controller.beneficiaryNameError.value 
+                                    ? Colors.red 
+                                    : Colors.grey[300]!,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4.r),
+                                borderSide: BorderSide(
+                                  color: controller.beneficiaryNameError.value 
+                                    ? Colors.red 
+                                    : Colors.grey[300]!,
+                                ),
+                              ),
+                            ),
+                          )),
+                          if (controller.beneficiaryNameError.value)
+                            FadeInLeft(
+                              duration: const Duration(milliseconds: 400),
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 4.h, left: 4.w),
+                                child: Text(
+                                  controller.beneficiaryNameErrorText.value,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+
                     // Account Number Field
                     FadeInDown(
                       duration: const Duration(milliseconds: 400),
@@ -366,13 +433,13 @@ class PaymentDetailsScreen extends StatelessWidget {
                        child: AppButton(
                                    iconData: SizedBox.shrink(),
                                    onTap: () {
-                                    //  if (controller.validatePaymentDetails()) {
+                                     if (controller.validatePaymentDetails()) {
                                        controller.nextStep();
                                        NavigationUtils.pushWithSlideTransition(
                                          context,
                                          VehicleDocumentsScreen(),
                                        );
-                                    //  }
+                                     }
                                    },
                                    text: 'Continue',
                                  ),

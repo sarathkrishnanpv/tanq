@@ -48,7 +48,7 @@ class CustomTextfield extends StatelessWidget {
                   focusedBorder: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
                 ),
-                // keyboardType: TextInputType.phone,
+                keyboardType: keyboardType,
               ),
             ),
           ),

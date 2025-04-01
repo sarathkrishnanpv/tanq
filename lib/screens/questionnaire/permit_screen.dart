@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
 
 class PermitScreen extends StatelessWidget {
   PermitScreen({super.key});
@@ -66,12 +67,15 @@ class PermitScreen extends StatelessWidget {
               fileSize: '1.0 MB',
               isUploaded: controller.permitPaths.isNotEmpty,
               onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  controller.permitPaths.clear();
-                  controller.permitPaths.add(image.path);
-                }
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      controller.permitPaths.clear();
+                      controller.permitPaths.add(image.path);
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image

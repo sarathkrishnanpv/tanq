@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
 
 class PANScreen extends StatelessWidget {
   PANScreen({super.key});
@@ -67,18 +68,21 @@ class PANScreen extends StatelessWidget {
                   : '',
               fileSize: '1.1 MB',
               isUploaded: controller.panPaths.isNotEmpty && controller.panPaths.length > 0,
-              onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  if (controller.panPaths.isEmpty) {
-                    controller.panPaths.add(image.path);
-                  } else if (controller.panPaths.length == 1) {
-                    controller.panPaths[0] = image.path;
-                  } else {
-                    controller.panPaths[0] = image.path;
-                  }
-                }
+              onUpload: () {
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      if (controller.panPaths.isEmpty) {
+                        controller.panPaths.add(image.path);
+                      } else if (controller.panPaths.length == 1) {
+                        controller.panPaths[0] = image.path;
+                      } else {
+                        controller.panPaths[0] = image.path;
+                      }
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image
@@ -106,19 +110,22 @@ class PANScreen extends StatelessWidget {
                   : '',
               fileSize: '0.9 MB',
               isUploaded: controller.panPaths.length > 1,
-              onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  if (controller.panPaths.isEmpty) {
-                    controller.panPaths.add(''); // Add empty front side
-                    controller.panPaths.add(image.path);
-                  } else if (controller.panPaths.length == 1) {
-                    controller.panPaths.add(image.path);
-                  } else {
-                    controller.panPaths[1] = image.path;
-                  }
-                }
+              onUpload: () {
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      if (controller.panPaths.isEmpty) {
+                        controller.panPaths.add(''); // Add empty front side
+                        controller.panPaths.add(image.path);
+                      } else if (controller.panPaths.length == 1) {
+                        controller.panPaths.add(image.path);
+                      } else {
+                        controller.panPaths[1] = image.path;
+                      }
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image

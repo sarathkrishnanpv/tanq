@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
 
 class DriversLicenseScreen extends StatelessWidget {
   DriversLicenseScreen({super.key});
@@ -66,11 +67,14 @@ class DriversLicenseScreen extends StatelessWidget {
               fileSize: '1.3 MB',
               isUploaded: controller.driversLicenseFront.value.isNotEmpty,
               onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  controller.driversLicenseFront.value = image.path.split('/').last;
-                }
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      controller.driversLicenseFront.value = image.path.split('/').last;
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image
@@ -95,11 +99,14 @@ class DriversLicenseScreen extends StatelessWidget {
               fileSize: '',
               isUploaded: controller.driversLicenseBack.value.isNotEmpty,
               onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  controller.driversLicenseBack.value = image.path.split('/').last;
-                }
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      controller.driversLicenseBack.value = image.path.split('/').last;
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image

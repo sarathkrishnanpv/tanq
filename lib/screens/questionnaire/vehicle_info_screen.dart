@@ -4,10 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tanq.driver.app/gen/assets.gen.dart';
 import 'package:tanq.driver.app/screens/questionnaire/payment_details_screen.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:tanq.driver.app/utils/navigation_utils.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
+import 'dart:io';
 
 class VehicleInfoScreen extends StatelessWidget {
   VehicleInfoScreen({Key? key}) : super(key: key);
@@ -652,51 +655,129 @@ class VehicleInfoScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 8.h),
-                                ListView.builder(
+                                Obx(() => ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: 4,
                                   itemBuilder: (context, index) {
+                                    // Check if we have an image for this index
+                                    final hasImage = index < controller.vehicleImages.length;
+                                    
                                     return Padding(
                                       padding: EdgeInsets.only(bottom: 8.h),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFF5F9FF),
-                                          borderRadius: BorderRadius.circular(4.r),
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            // Handle image upload
-                                          },
-                                          style: TextButton.styleFrom(
-                                            padding: EdgeInsets.symmetric(vertical: 16.h),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(4.r),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                      child: hasImage 
+                                        // Show the uploaded image
+                                        ? Stack(
                                             children: [
-                                              Text(
-                                                'Upload',
-                                                style: TextStyle(
-                                                  color: const Color(0xFF1c67f2),
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w500,
+                                              Container(
+                                                height: 150.h,
+                                                width: double.infinity,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(4.r),
+                                                  image: DecorationImage(
+                                                    image: FileImage(File(controller.vehicleImages[index])),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
                                               ),
-                                              Icon(
-                                                Icons.arrow_forward,
-                                                color: const Color(0xFF1c67f2),
-                                                size: 16.sp,
+                                              Positioned(
+                                                top: 8.h,
+                                                right: 8.w,
+                                                child: GestureDetector(
+                                                  onTap: () => controller.removeVehicleImage(index),
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(6.w),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black.withOpacity(0.6),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.close,
+                                                      color: Colors.white,
+                                                      size: 16.sp,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                bottom: 8.h,
+                                                right: 8.w,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    showImageSourceSheet(
+                                                      context,
+                                                      onImageSelected: (XFile? image) {
+                                                        if (image != null) {
+                                                          // Replace the image at this index
+                                                          controller.vehicleImages[index] = image.path;
+                                                          controller.vehicleImagesError.value = false;
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(6.w),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black.withOpacity(0.6),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.edit,
+                                                      color: Colors.white,
+                                                      size: 16.sp,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ],
+                                          )
+                                        // Show the upload button
+                                        : Container(
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFF5F9FF),
+                                            borderRadius: BorderRadius.circular(4.r),
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              showImageSourceSheet(
+                                                context,
+                                                onImageSelected: (XFile? image) {
+                                                  if (image != null) {
+                                                    controller.addVehicleImage(image.path);
+                                                    controller.vehicleImagesError.value = false;
+                                                  }
+                                                },
+                                              );
+                                            },
+                                            style: TextButton.styleFrom(
+                                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(4.r),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Upload',
+                                                  style: TextStyle(
+                                                    color: const Color(0xFF1c67f2),
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  Icons.arrow_forward,
+                                                  color: const Color(0xFF1c67f2),
+                                                  size: 16.sp,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
                                     );
                                   },
-                                ),
+                                )),
                                 Padding(
                                   padding: EdgeInsets.only(left: 4.w),
                                   child: Text(
@@ -707,6 +788,23 @@ class VehicleInfoScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                
+                                // Error message for vehicle images
+                                Obx(() {
+                                  if (controller.vehicleImagesError.value) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(top: 8.h, left: 4.w),
+                                      child: Text(
+                                        controller.vehicleImagesErrorText.value,
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  return const SizedBox.shrink();
+                                }),
                               ],
                             ),
                           ),
@@ -730,14 +828,14 @@ class VehicleInfoScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  controller.nextStep();
-               
+                  if (controller.validateVehicleInfo()) {
+                    controller.nextStep();
                     NavigationUtils.pushWithSlideTransition(
                       context,
                       PaymentDetailsScreen(),
                     );
-                  },
-                
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   foregroundColor: Colors.white,

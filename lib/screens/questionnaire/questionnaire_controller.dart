@@ -55,14 +55,17 @@ class QuestionnaireController extends GetxController {
   final RxString bankName = ''.obs;
   final RxString accountNumber = ''.obs;
   final RxString ifscCode = ''.obs;
+  final RxString beneficiaryName = ''.obs;
 
   final RxBool bankNameError = false.obs;
   final RxBool accountNumberError = false.obs;
   final RxBool ifscCodeError = false.obs;
+  final RxBool beneficiaryNameError = false.obs;
 
   final RxString bankNameErrorText = ''.obs;
   final RxString accountNumberErrorText = ''.obs;
   final RxString ifscCodeErrorText = ''.obs;
+  final RxString beneficiaryNameErrorText = ''.obs;
 
   // Document Upload Status
   final RxBool driversLicenseUploaded = false.obs;
@@ -321,6 +324,13 @@ class QuestionnaireController extends GetxController {
       isValid = false;
     }
 
+    // Validate beneficiary name
+    if (beneficiaryName.value.isEmpty) {
+      beneficiaryNameError.value = true;
+      beneficiaryNameErrorText.value = 'Please enter beneficiary name';
+      isValid = false;
+    }
+
     // Validate account number
     if (accountNumber.value.isEmpty) {
       accountNumberError.value = true;
@@ -373,6 +383,12 @@ class QuestionnaireController extends GetxController {
         'model': vehicleModel.value,
         'year': vehicleYear.value,
         'license_plate': licensePlate.value,
+      },
+      'payment_info': {
+        'bank_name': bankName.value,
+        'beneficiary_name': beneficiaryName.value,
+        'account_number': accountNumber.value,
+        'ifsc_code': ifscCode.value,
       },
       'documents': {
         'driver_license': driverLicense.value,

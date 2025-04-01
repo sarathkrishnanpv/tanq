@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
 
 class RCBookScreen extends StatelessWidget {
   RCBookScreen({super.key});
@@ -66,11 +67,14 @@ class RCBookScreen extends StatelessWidget {
               fileSize: '1.3 MB',
               isUploaded: controller.rcBookFront.value.isNotEmpty,
               onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  controller.rcBookFront.value = image.path.split('/').last;
-                }
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      controller.rcBookFront.value = image.path.split('/').last;
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image
@@ -95,11 +99,14 @@ class RCBookScreen extends StatelessWidget {
               fileSize: '',
               isUploaded: controller.rcBookBack.value.isNotEmpty,
               onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  controller.rcBookBack.value = image.path.split('/').last;
-                }
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      controller.rcBookBack.value = image.path.split('/').last;
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image

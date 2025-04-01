@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tanq.driver.app/screens/questionnaire/questionnaire_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tanq.driver.app/widgets/image_source_bottom_sheet.dart';
 
 class InsuranceScreen extends StatelessWidget {
   InsuranceScreen({super.key});
@@ -66,12 +67,15 @@ class InsuranceScreen extends StatelessWidget {
               fileSize: '1.5 MB',
               isUploaded: controller.insurancePaths.isNotEmpty,
               onUpload: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  controller.insurancePaths.clear();
-                  controller.insurancePaths.add(image.path);
-                }
+                showImageSourceSheet(
+                  context,
+                  onImageSelected: (XFile? image) {
+                    if (image != null) {
+                      controller.insurancePaths.clear();
+                      controller.insurancePaths.add(image.path);
+                    }
+                  },
+                );
               },
               onView: () {
                 // View image

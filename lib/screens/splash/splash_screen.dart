@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           Center(
             child: Lottie.asset(
               repeat: false,
-              Assets.gif.splash,
+              Assets.images.normal.splash,
             ),
           ),
         ],

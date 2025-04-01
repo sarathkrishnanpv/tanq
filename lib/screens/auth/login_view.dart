@@ -81,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
                   CustomTextfield(
                     controller: mobileNumebr,
                     label: "MOBILE NUMBER",
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: 16),
                 ],
